@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMC University</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f5f5f5;
+            margin: 0;
+        }
+
+        /* Left sidebar styles */
+        .left-sidebar {
+            background-color: #fff;
+            padding: 30px;
+            padding-left: 40px;
+            width: 280px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #f5f5f5;
+        }
+
+        .left-sidebar .icon {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .left-sidebar .logo img {
+            height: 100px;
+            margin-bottom: 20px;
+        }
+
+        .left-sidebar .icon img {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+        }
+
+        .left-sidebar .icon span {
+            font-size: 16px;
+            margin-left: 10px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .dish-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .dish-card img {
+            width: 80%;
+            height: 80%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .dish-card p {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header-container h1 {
+            margin-right: auto;
+            font-size: 24px;
+        }
+
+        .add-dish-btn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 14px;
+            cursor: pointer;
+            border: none;
+            height: 30px;
+            margin-top: 30px;
+        }
+
+        .add-dish-btn:hover {
+            background-color: #0056b3;
+        }
+
+        /* Popup form styling */
+        .form-popup {
+            display: none; /* Hidden by default */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 9;
+            padding: 20px;
+            border-radius: 10px;
+            width: 700px;
+        }
+
+        .form-popup h1 {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-form input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+        }
+
+        .form-popup button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .form-popup button.cancel {
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+
+        .form-popup button.cancel:hover {
+            background-color: #bbb;
+        }
+
+        .form-popup button:hover {
+            background-color: #0056b3;
+        }
+
+        .context-menu-popup {
+            position: fixed;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .context-menu-popup button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .context-menu-popup button:hover {
+            background-color: #0056b3;
+        }
+
+    </style>
+</head>
+<body>
+<div class="left-sidebar">
+    <div class="logo">
+        <img src="../Images/LogoImage.png" alt="Logo">
+    </div>
+    <div class="icon" onclick="location.href='KEHomeScreen.html';">
+        <img src="../Images/HomeIcon.png" alt="Home Icon">
+        <span>Trang chủ</span>
+    </div>
+    <div class="icon active" onclick="location.href='./KEDishManagement.html';">
+        <img src="../Images/MenuIcon.png" alt="Menu Icon">
+        <span>Thực đơn</span>
+    </div>
+    <div class="icon">
+        <img src="../Images/FeedbackIcon.png" alt="Feedback Icon">
+        <span>Ý kiến phản hồi</span>
+    </div>
+</div>
+<div class="right-section">
+    <div class="top-bar">
+        <div class="user-info">
+            <span>Have a great day!</span>
+            <img src="../Images/DropDownIcon.png" alt="Drop Down Icon" class="dropdown-icon" onclick="toggleDropdown()">
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item" onclick="location.href='./KEProfileScreen.html';">
+                <img src="../Images/AvatarIcon.png" alt="Avatar Icon">
+                <span>Thông tin tài khoản</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='./KEChangePasswordScreen.html';">
+                <img src="../Images/KeyIcon.png" alt="Key Icon">
+                <span>Thay đổi mật khẩu</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='../index.html';">
+                <img src="../Images/LogoutIcon.png" alt="Logout Icon">
+                <span>Đăng xuất</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <h1 style="padding-left: 20px;">Danh sách các món ăn</h1>
+        <button class="add-dish-btn" onclick="openForm()">Thêm món ăn</button>
+        <div class="grid-container">
+            <!-- Dish cards will be dynamically generated here -->
+        </div>
+    </div>
+
+    <div class="form-popup" id="dishForm">
+        <h1>Thêm món ăn</h1>
+        <div class="login-form">
+            <label for="dishId">ID món ăn</label>
+            <input type="text" id="dishId" name="dishId" required>
+            <label for="dishName">Tên món ăn</label>
+            <input type="text" id="dishName" name="dishName" required>
+            <label for="dishDescription">Mô tả món ăn</label>
+            <input type="text" id="dishDescription" name="dishDescription" required>
+            <label for="dishImage">Hình ảnh món ăn</label>
+            <input type="text" id="dishImage" name="dishImage" required>
+            <label for="dishCategory">Thể loại</label>
+            <input type="text" id="dishCategory" name="dishCategory" required>
+            <label for="dishKE">ID Nhân viên nhà bếp</label>
+            <input type="text" id="dishKE" name="dishKE" required>
+            <label for="dishPosition">Vị trí</label>
+            <input type="text" id="dishPosition" name="dishPosition" required>
+            <button onclick="createDish()">Create Dish</button>
+            <button type="button" class="cancel" onclick="closeForm()">Cancel</button>
+        </div>
+    </div>
+    <!-- Add this modal in your HTML -->
+    <div class="context-menu-popup" id="contextMenu" style="display: none;">
+        <button onclick="editDish()">Sửa món ăn</button>
+        <button onclick="deleteDish()">Xóa món ăn</button>
+    </div>
+    <!-- Edit Dish Form Popup -->
+    <div class="form-popup" id="editDishForm" style="display: none;">
+        <h1>Sửa món ăn</h1>
+        <div class="login-form">
+            <label for="editDishId">ID món ăn</label>
+            <input type="text" id="editDishId" name="editDishId" readonly>
+            <label for="editDishName">Tên món ăn</label>
+            <input type="text" id="editDishName" name="editDishName" required>
+            <label for="editDishDescription">Mô tả món ăn</label>
+            <input type="text" id="editDishDescription" name="editDishDescription" required>
+            <label for="editDishImage">Hình ảnh món ăn</label>
+            <input type="text" id="editDishImage" name="editDishImage" required>
+            <label for="editDishCategory">Thể loại</label>
+            <input type="text" id="editDishCategory" name="editDishCategory" required>
+            <label for="editDishKE">ID Nhân viên nhà bếp</label>
+            <input type="text" id="editDishKE" name="editDishKE" required>
+            <label for="editDishPosition">Vị trí</label>
+            <input type="text" id="editDishPosition" name="editDishPosition" required>
+            <button onclick="updateDish()">Cập nhật món ăn</button>
+            <button type="button" class="cancel" onclick="closeEditForm()">Hủy</button>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+
+<script>
+    // Toggle dropdown menu
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    }
+    // Ensure that DOM content is loaded before running scripts
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchDishes();
+
+        // Add event listeners for the close button in the edit form
+        document.querySelector('.form-popup button.cancel').addEventListener('click', closeForm);
+        document.querySelector('#editDishForm .cancel').addEventListener('click', closeEditForm);
+    });
+
+    function fetchDishes() {
+        fetch('http://localhost:8080/api/dishes', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                const gridContainer = document.querySelector('.grid-container');
+                gridContainer.innerHTML = ''; // Clear existing content
+
+                // Iterate over the fetched data and create a card for each dish
+                data.forEach(dish => {
+                    const dishCard = document.createElement('div');
+                    dishCard.className = 'dish-card';
+
+                    // Set the inner HTML of each dish card
+                    dishCard.innerHTML = `
+            <img src="${dish.image}" alt="${dish.name}">
+            <p>${dish.name}</p>
+            `;
+
+                    // Set the click event to open the context menu
+                    dishCard.onclick = (event) => {
+                        event.stopPropagation(); // Stop the event from bubbling up
+                        selectedDishId = dish.id; // Set the selected dish ID
+                        openContextMenu(event.pageX, event.pageY);
+                    };
+
+                    // Append the dish card to the grid container
+                    gridContainer.appendChild(dishCard);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function createDish() {
+        const dishData = {
+            id: document.getElementById('dishId').value,
+            name: document.getElementById('dishName').value,
+            image: document.getElementById('dishImage').value,
+            description: document.getElementById('dishDescription').value,
+            category: document.getElementById('dishCategory').value,
+            kitchen_employee_id: document.getElementById('dishKE').value,
+            position: document.getElementById('dishPosition').value
+        };
+
+        fetch('http://localhost:8080/api/dishes', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dishData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                closeForm();
+                fetchDishes();
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function openForm() {
+        document.getElementById("dishForm").style.display = "block";
+    }
+
+    function closeForm() {
+        document.getElementById("dishForm").style.display = "none";
+    }
+
+    let selectedDishId = null; // Variable to store the selected dish ID
+
+    function openContextMenu(x, y) {
+        const contextMenu = document.getElementById('contextMenu');
+        contextMenu.style.display = 'block';
+        contextMenu.style.left = `${x}px`;
+        contextMenu.style.top = `${y}px`;
+    }
+
+    function closeContextMenu() {
+        const contextMenu = document.getElementById('contextMenu');
+        contextMenu.style.display = 'none';
+    }
+
+    function editDish() {
+        if (selectedDishId) {
+            fetch(`http://localhost:8080/api/dishes/${selectedDishId}`, {
+                method: 'GET',
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Populate the form with the dish data
+                    document.getElementById('editDishId').value = data.id;
+                    document.getElementById('editDishName').value = data.name;
+                    document.getElementById('editDishDescription').value = data.description;
+                    document.getElementById('editDishImage').value = data.image;
+                    document.getElementById('editDishCategory').value = data.category;
+                    document.getElementById('editDishKE').value = data.kitchen_employee_id;
+                    document.getElementById('editDishPosition').value = data.position;
+
+                    // Open the form popup
+                    document.getElementById('editDishForm').style.display = 'block';
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        closeContextMenu();
+    }
+
+    function updateDish() {
+        const dishData = {
+            id: document.getElementById('editDishId').value,
+            name: document.getElementById('editDishName').value,
+            image: document.getElementById('editDishImage').value,
+            description: document.getElementById('editDishDescription').value,
+            category: document.getElementById('editDishCategory').value,
+            kitchen_employee_id: document.getElementById('editDishKE').value,
+            position: document.getElementById('editDishPosition').value
+        };
+
+        fetch(`http://localhost:8080/api/dishes/${dishData.id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dishData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Dish updated successfully:', data);
+                closeEditForm();
+                fetchDishes(); // Refresh the list
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+    function deleteDish() {
+        if (selectedDishId) {
+            fetch(`http://localhost:8080/api/dishes/${selectedDishId}`, {
+                method: 'DELETE',
+            })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Dish deleted successfully');
+                        fetchDishes(); // Refresh the list
+                    } else {
+                        console.error('Error deleting the dish');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+        closeContextMenu();
+    }
+
+    function closeEditForm() {
+        document.getElementById("editDishForm").style.display = "none";
+    }
+
+    // Hide the context menu if clicking outside of it
+    document.addEventListener('click', function(event) {
+        if (!document.getElementById('contextMenu').contains(event.target)) {
+            closeContextMenu();
+        }
+    });
+
+</script>

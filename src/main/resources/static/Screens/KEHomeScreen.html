@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMC University</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="left-sidebar">
+        <div class="logo">
+            <img src="../Images/LogoImage.png" alt="Logo">
+        </div>
+        <div class="icon active" onclick="location.href='./KEHomeScreen.html';">
+            <img src="../Images/HomeIcon.png" alt="Home Icon">
+            <span>Trang chủ</span>
+        </div>
+        <div class="icon" onclick="location.href='KEDishManagement.html';">
+            <img src="../Images/MenuIcon.png" alt="Menu Icon">
+            <span>Thực đơn</span>
+        </div>
+        <div class="icon">
+            <img src="../Images/FeedbackIcon.png" alt="Feedback Icon">
+            <span>Ý kiến phản hồi</span>
+        </div>
+    </div>
+    <div class="right-section">
+        <div class="top-bar">
+            <div class="user-info">
+                <span>Have a great day!</span>
+                <img src="../Images/DropDownIcon.png" alt="Drop Down Icon" class="dropdown-icon" onclick="toggleDropdown()">
+            </div>
+            <div class="dropdown-menu" id="dropdownMenu">
+                <div class="dropdown-item" onclick="location.href='./KEProfileScreen.html';">
+                    <img src="../Images/AvatarIcon.png" alt="Avatar Icon">
+                    <span>Thông tin tài khoản</span>
+                </div>
+                <div class="dropdown-item" onclick="location.href='./KEChangePasswordScreen.html';">
+                    <img src="../Images/KeyIcon.png" alt="Key Icon">
+                    <span>Thay đổi mật khẩu</span>
+                </div>
+                <div class="dropdown-item" onclick="location.href='../index.html';">
+                    <img src="../Images/LogoutIcon.png" alt="Logout Icon">
+                    <span>Đăng xuất</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="clickable">
+                <div class="content-section" onclick="location.href='KEDishManagement.html';">
+                    <img src="../Images/MenuImage.png" alt="Menu Image">
+                    <h3>Xem thực đơn</h3>
+                    <p>Updated menu 23/09/2024</p>
+                </div>
+            </div>
+            <div class="clickable">
+                <div class="content-section">
+                    <img src="../Images/FeedbackImage.png" alt="Feedback Image">
+                    <h3>Ý kiến phản hồi</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="script.js"></script>
+</html>

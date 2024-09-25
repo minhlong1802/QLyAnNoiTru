@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for the table and form */
+        .account-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: 20px;
+        }
+
+        .account-table th, .account-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .account-table th {
+            background-color: #f2f2f2;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .form-popup h3 {
+            margin: 0 0 10px;
+        }
+
+        .form-popup input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-popup button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-popup button.cancel {
+            background-color: #dc3545;
+        }
+        /* Style for the form container */
+#update-account-form {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* Style for form labels */
+#update-account-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Style for form inputs */
+#update-account-form input[type="text"],
+#update-account-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+/* Style for the buttons */
+#update-account-form button {
+    padding: 10px 20px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#update-account-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
+
+#update-account-form button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Button hover effects */
+#update-account-form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#update-account-form button[type="button"]:hover {
+    background-color: #e53935;
+}
+
+        #createAccountBtn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 14px;
+            cursor: pointer;
+            border: none;
+            height: 30px;
+            margin-top: 30px; /* Space between the heading and the button */
+        }
+
+        /* Additional styling for the student list heading */
+        .student-list h2 {
+            margin-top: 20px; /* Space above the student list heading */
+        }
+            /* Add margin to the button */
+            #createAccountBtn {
+            margin-top: 30px; /* Space between the heading and the button */
+            }
+
+            /* Additional styling for the student list heading */
+            .student-list h2 {
+            margin-top: 20px; /* Space above the student list heading */
+            }
+            .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .dish-card {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+
+        .dish-card img {
+            width: 80%;
+            height: 80%;
+            max-width: 100%;
+            border-radius: 10px;
+        }
+
+        .dish-card p {
+            margin-top: 10px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .header-container h1 {
+            margin-right: auto;
+            font-size: 24px;
+        }
+
+        .context-menu-popup {
+            position: fixed;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+            padding: 10px;
+            border-radius: 5px;
+            width: 200px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .context-menu-popup button {
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
+        .context-menu-popup button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="left-sidebar">
+    <div class="logo">
+        <img src="../Images/LogoImage.png" alt="Logo">
+    </div>
+    <div class="icon" onclick="location.href='./AdminHomeScreen.html';" >
+        <img src="../Images/HomeIcon.png" alt="Home Icon">
+        <span>Trang chủ</span>
+    </div>
+    <div class="icon active">
+        <img src="../Images/MenuIcon.png" alt="Menu Icon">
+        <span>Xem thực đơn</span>
+    </div>
+    <div class="icon" onclick="location.href='AdminStudentManageScreen.html';">
+        <img src="../Images/StudentManageIcon.png" alt="Student Management Icon">
+        <span>Quản lý tài khoản</span>
+    </div>
+    <div class="icon"  onclick="location.href='./AdminStatisticScreen.html';">
+        <img src="../Images/StatisticIcon.png" alt="Statistic Icon">
+        <span>Thống kê</span>
+    </div>
+    <div class="icon">
+        <img src="../Images/FeedbackIcon.png" alt="Feedback Icon">
+        <span>Ý kiến phản hồi</span>
+    </div>
+</div>
+<div class="right-section">
+    <div class="top-bar">
+        <div class="user-info">
+            <span>Have a great day!</span>
+            <img src="../Images/DropDownIcon.png" alt="Drop Down Icon" class="dropdown-icon" onclick="toggleDropdown()">
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item" onclick="location.href='./AdminProfileScreen.html';">
+                <img src="../Images/AvatarIcon.png" alt="Avatar Icon">
+                <span>Thông tin tài khoản</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='./AdminChangePasswordScreen.html';">
+                <img src="../Images/KeyIcon.png" alt="Key Icon">
+                <span>Thay đổi mật khẩu</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='../index.html';">
+                <img src="../Images/LogoutIcon.png" alt="Logout Icon">
+                <span>Đăng xuất</span>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1 style="padding-left: 20px;">Danh sách các món ăn</h1>
+        <div class="grid-container">
+            <!-- Dish cards will be dynamically generated here -->
+        </div>
+    </div>
+    
+    <script>
+        // Toggle dropdown menu
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    }
+    // Ensure that DOM content is loaded before running scripts
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchDishes();
+
+        // Add event listeners for the close button in the edit form
+        document.querySelector('.form-popup button.cancel').addEventListener('click', closeForm);
+        document.querySelector('#editDishForm .cancel').addEventListener('click', closeEditForm);
+    });
+
+    function fetchDishes() {
+        fetch('http://localhost:8080/api/dishes', {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(data => {
+                const gridContainer = document.querySelector('.grid-container');
+                gridContainer.innerHTML = ''; // Clear existing content
+
+                // Iterate over the fetched data and create a card for each dish
+                data.forEach(dish => {
+                    const dishCard = document.createElement('div');
+                    dishCard.className = 'dish-card';
+
+                    // Set the inner HTML of each dish card
+                    dishCard.innerHTML = `
+            <img src="${dish.image}" alt="${dish.name}">
+            <p>${dish.name}</p>
+            `;
+
+                    // Set the click event to open the context menu
+                    dishCard.onclick = (event) => {
+                        event.stopPropagation(); // Stop the event from bubbling up
+                        selectedDishId = dish.id; // Set the selected dish ID
+                        openContextMenu(event.pageX, event.pageY);
+                    };
+
+                    // Append the dish card to the grid container
+                    gridContainer.appendChild(dishCard);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    // Hide the context menu if clicking outside of it
+    document.addEventListener('click', function(event) {
+        if (!document.getElementById('contextMenu').contains(event.target)) {
+            closeContextMenu();
+        }
+    });
+    </script>    
+</html>

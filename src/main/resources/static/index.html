@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CMC UNIVERSITY Login</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-container {
+            background-color: #f0f0f0;
+            padding: 40px;
+        }
+
+        .logo {
+            margin-left: 45px;
+            width: 350px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #0099cc;
+            margin-bottom: 5px;
+        }
+
+        .tagline {
+            color: #0099cc;
+            margin-bottom: 20px;
+        }
+
+        .login-form {
+            background-color: #B8C9D9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .login-form label {
+            display: block;
+            text-align: left;
+            margin-bottom: 15px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .sign-in-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 10px;
+            background-color: #0099cc;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .sign-in-btn:hover {
+            background-color: #0077aa;
+        }
+
+        .forgot-password {
+            display: inline-block;
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+
+        .forgot-password:hover {
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-container">
+        <img src="./Images/LogoImage.png" alt="CMC University Logo" class="logo">
+        <form class="login-form" id="login-form">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Value" required>
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Value" required>
+            <button type="submit" class="sign-in-btn">Sign In</button>
+            <a href="./Screens/ForgotPasswordScreen.html" class="forgot-password">Forgot password?</a>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('login-form').addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Fetch user data from the API based on the username
+            fetch(`http://localhost:8080/api/account/username/${username}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Username or Password is not correct');
+                        document.getElementById('username').value = '';
+                        document.getElementById('password').value = '';
+                    }
+                    return response.json();
+                })
+                .then(user => {
+                    // Here you would normally hash the password and compare with the stored hash
+                    // For example, using bcrypt.js in a real application
+                    // But for simplicity, we will compare directly (this is just an example and not secure)
+                    if (user.password_hash === password) {
+                        if (user.status === 'ACTIVE') {
+                            if(user.role==='Admin'){
+                                // Store the username in localStorage
+                            localStorage.setItem('username', username);
+                            window.location.href = './Screens/AdminHomeScreen.html'; // Navigate to AdminHomeScreen
+                            }
+                            else if(user.role==='Student'){
+                                // Store the username in localStorage
+                            localStorage.setItem('username', username);
+                            window.location.href = './Screens/OrderScreens.html'; // Navigate to StudentHomeScreen
+                            }
+                            else{
+                                // Store the username in localStorage
+                            localStorage.setItem('username', username);
+                            window.location.href = './Screens/KEHomeScreen.html'; // Navigate to KitchenEmployeeHomeScreen
+                            }                           
+                        } else {
+                            alert('Your account is not available.');
+                            document.getElementById('username').value = '';
+                        document.getElementById('password').value = '';
+                        }
+                    } else {
+                        alert('Username or Password is not correct');
+                        document.getElementById('username').value = '';
+                        document.getElementById('password').value = '';
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        });
+    </script>
+</body>
+
+</html>

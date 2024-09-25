@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Management</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Additional styles for the table and form */
+        .account-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-left: 20px;
+        }
+
+        .account-table th, .account-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .account-table th {
+            background-color: #f2f2f2;
+        }
+
+        .form-popup {
+            display: none;
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid #ccc;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .form-popup h3 {
+            margin: 0 0 10px;
+        }
+
+        .form-popup input {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-popup button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-popup button.cancel {
+            background-color: #dc3545;
+        }
+        /* Style for the form container */
+#update-account-form {
+    display: none;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    width: 400px;
+    height: 500px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+/* Style for form labels */
+#update-account-form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Style for form inputs */
+#update-account-form input[type="text"],
+#update-account-form input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #333;
+    box-sizing: border-box;
+}
+
+/* Style for the buttons */
+#update-account-form button {
+    padding: 10px 20px;
+    font-size: 12px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#update-account-form button[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
+
+#update-account-form button[type="button"] {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Button hover effects */
+#update-account-form button[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+#update-account-form button[type="button"]:hover {
+    background-color: #e53935;
+}
+
+        #createAccountBtn {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border-radius: 14px;
+            cursor: pointer;
+            border: none;
+            height: 30px;
+            margin-top: 30px; /* Space between the heading and the button */
+        }
+
+        /* Additional styling for the student list heading */
+        .student-list h2 {
+            margin-top: 20px; /* Space above the student list heading */
+        }
+            /* Add margin to the button */
+            #createAccountBtn {
+            margin-top: 30px; /* Space between the heading and the button */
+            }
+
+            /* Additional styling for the student list heading */
+            .student-list h2 {
+            margin-top: 20px; /* Space above the student list heading */
+            }
+
+    </style>
+</head>
+<body>
+<div class="left-sidebar">
+    <div class="logo">
+        <img src="../Images/LogoImage.png" alt="Logo">
+    </div>
+    <div class="icon" onclick="location.href='./AdminHomeScreen.html';" >
+        <img src="../Images/HomeIcon.png" alt="Home Icon">
+        <span>Trang chủ</span>
+    </div>
+    <div class="icon" onclick="location.href='./AdminMenuScreen.html';">
+        <img src="../Images/MenuIcon.png" alt="Menu Icon">
+        <span>Xem thực đơn</span>
+    </div>
+    <div class="icon active">
+        <img src="../Images/StudentManageIcon.png" alt="Student Management Icon">
+        <span>Quản lý tài khoản</span>
+    </div>
+    <div class="icon" onclick="location.href='./AdminStatisticScreen.html';">
+        <img src="../Images/StatisticIcon.png" alt="Statistic Icon">
+        <span>Thống kê</span>
+    </div>
+    <div class="icon">
+        <img src="../Images/FeedbackIcon.png" alt="Feedback Icon">
+        <span>Ý kiến phản hồi</span>
+    </div>
+</div>
+<div class="right-section">
+    <div class="top-bar">
+        <div class="user-info">
+            <span>Have a great day!</span>
+            <img src="../Images/DropDownIcon.png" alt="Drop Down Icon" class="dropdown-icon" onclick="toggleDropdown()">
+        </div>
+        <div class="dropdown-menu" id="dropdownMenu">
+            <div class="dropdown-item" onclick="location.href='./AdminProfileScreen.html';">
+                <img src="../Images/AvatarIcon.png" alt="Avatar Icon">
+                <span>Thông tin tài khoản</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='./AdminChangePasswordScreen.html';">
+                <img src="../Images/KeyIcon.png" alt="Key Icon">
+                <span>Thay đổi mật khẩu</span>
+            </div>
+            <div class="dropdown-item" onclick="location.href='../index.html';">
+                <img src="../Images/LogoutIcon.png" alt="Logout Icon">
+                <span>Đăng xuất</span>
+            </div>
+        </div>
+    </div>
+    <div class="main-content">
+        <h1 style="margin-left: 20px;">Quản lý tài khoản</h1>
+        <button id="createAccountBtn">Tạo tài khoản</button>
+        <div class="student-list">
+            <h2 style="margin-left: 20px;">Danh sách tài khoản</h2>
+            <table class="account-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Password Hash</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Student ID</th>
+                    <th>Admin ID</th>
+                    <th>Kitchen Employee ID</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody id="accountList">
+                <!-- Accounts will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<form class="form-popup" id="accountForm">
+    <h3>Tạo Tài Khoản</h3>
+    <input type="text" id="id" placeholder="ID" required>
+    <input type="text" id="username" placeholder="Username" required>
+    <input type="text" id="password_hash" placeholder="Password Hash" required>
+    <input type="text" id="role" placeholder="Role" required>
+    <input type="text" id="status" placeholder="Status" required>
+    <input type="text" id="student_id" placeholder="Student ID">
+    <input type="text" id="admin_id" placeholder="Admin ID">
+    <input type="text" id="kitchen_employee_id" placeholder="Kitchen Employee ID">
+    <button onclick="createAccount()">Create Account</button>
+    <button type="button" class="cancel" onclick="closeForm()">Cancel</button>
+</form>
+<!-- Update Account Form -->
+<form id="update-account-form" style="display: none;">
+    <label for="account-id">ID:</label>
+    <input type="text" id="account-id" required>
+    <label for="account-username">Username:</label>
+    <input type="text" id="account-username" required>
+    <label for="account-password">Password:</label>
+    <input type="password" id="account-password" required>
+    <label for="account-role">Role:</label>
+    <input type="text" id="account-role" required>
+    <label for="account-status">Status:</label>
+    <input type="text" id="account-status" required>
+    <label for="account-student_id">Student ID:</label>
+    <input type="text" id="account-student_id" >
+    <label for="account-admin_id">Admin ID:</label>
+    <input type="text" id="account-admin_id" >
+    <label for="account-kitchen_employee_id">Kitchen Employee ID:</label>
+    <input type="text" id="account-kitchen_employee_id" >
+    <button type="submit">Update Account</button>
+    <button type="button" onclick="cancelUpdate()">Cancel</button>
+</form>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    const apiUrl = "http://localhost:8080/api/account"; // Replace with your backend API URL
+
+    // Toggle dropdown menu
+    function toggleDropdown() {
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        dropdownMenu.style.display = dropdownMenu.style.display === "block" ? "none" : "block";
+    }
+
+    // Create Account button event
+    document.getElementById("createAccountBtn").addEventListener("click", function() {
+        document.getElementById("accountForm").style.display = "block";
+        clearAccountForm(); // Clear the form inputs when opening the create form
+    });
+
+    // Close the form
+    function closeForm() {
+        document.getElementById("accountForm").style.display = "none";
+    }
+
+    // Function to fetch and display accounts
+    function fetchAccounts() {
+        axios.get(apiUrl)
+            .then((response) => {
+                const tbody = document.getElementById("accountList");
+                tbody.innerHTML = "";
+                response.data.forEach((account) => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>${account.id}</td>
+                        <td>${account.username}</td>
+                        <td>${account.password_hash}</td>
+                        <td>${account.role}</td>
+                        <td>${account.status}</td>
+                        <td>${account.student_id || ''}</td>
+                        <td>${account.admin_id || ''}</td>
+                        <td>${account.kitchen_employee_id || ''}</td>
+                        <td>
+                            <button class="btn btn-danger" onclick="deleteAccount('${account.id}')">Delete</button>
+                            <button class="btn btn-warning" onclick="prepareUpdate('${account.id}')">Update</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            })
+            .catch((error) => {
+                console.error("Error fetching accounts:", error);
+            });
+    }
+
+    // Function to delete an account by ID
+function deleteAccount(id) {
+    const confirmDelete = window.confirm("Xác nhận xóa tài khoản này chứ?");
+
+    if (confirmDelete) {
+        axios.delete(apiUrl + "/delete/" + id)
+            .then(() => {
+                fetchAccounts(); // Refresh the account list after deletion
+            })
+            .catch((error) => {
+                console.error("Error deleting account:", error);
+            });
+    } else {
+        // If cancel is clicked, do nothing
+        console.log("Account deletion canceled");
+    }
+}
+
+
+    // Function to prepare the form for updating an account
+    function prepareUpdate(id) {
+        axios.get(apiUrl + "/id/" + id)
+            .then((response) => {
+                const account = response.data;
+                document.getElementById("account-id").value = account.id;
+                document.getElementById("account-username").value = account.username;
+                document.getElementById("account-password").value = account.password_hash;
+                document.getElementById("account-role").value = account.role;
+                document.getElementById("account-status").value = account.status;
+                document.getElementById("account-student_id").value = account.student_id || '';
+                document.getElementById("account-admin_id").value = account.admin_id || '';
+                document.getElementById("account-kitchen_employee_id").value = account.kitchen_employee_id || '';
+
+                document.getElementById("update-account-form").style.display = "block";
+            })
+            .catch((error) => {
+                console.error("Error fetching account for update:", error);
+            });
+    }
+
+    // Function to cancel the update process
+    function cancelUpdate() {
+        document.getElementById("update-account-form").reset();
+        document.getElementById("update-account-form").style.display = "none"; // Hide the form
+    }
+
+    // Function to create a new account
+    function createAccount() {
+        const newAccount = {
+            id: document.getElementById("id").value,
+            username: document.getElementById("username").value,
+            password_hash: document.getElementById("password_hash").value,
+            role: document.getElementById("role").value,
+            status: document.getElementById("status").value,
+            student_id: document.getElementById("student_id").value || null,
+            admin_id: document.getElementById("admin_id").value || null,
+            kitchen_employee_id: document.getElementById("kitchen_employee_id").value || null,
+        };
+
+        axios.post(apiUrl + "/create", newAccount)
+            .then(() => {
+                fetchAccounts();
+                document.getElementById("accountForm").reset(); // Clear the form inputs after creation
+                document.getElementById("add-product-form").onsubmit = createAccount; // Reassign the form submission event
+                document.getElementById("accountForm").style.display = "none"; // Hide the form after creation
+                closeForm(); // Hide form after creation
+            })
+            .catch((error) => {
+                console.error("Error creating account:", error);
+            });
+
+        return false; // Prevent default form submission
+    }
+
+    // Function to update an account
+    function updateAccount() {
+        const updatedAccount = {
+            id: document.getElementById("account-id").value,
+            username: document.getElementById("account-username").value,
+            password_hash: document.getElementById("account-password").value,
+            role: document.getElementById("account-role").value,
+            status: document.getElementById("account-status").value,
+            student_id: document.getElementById("account-student_id").value || null,
+            admin_id: document.getElementById("account-admin_id").value || null,
+            kitchen_employee_id: document.getElementById("account-kitchen_employee_id").value || null,
+        };
+
+        axios.put(apiUrl + "/update/" + updatedAccount.id, updatedAccount)
+            .then(() => {
+                fetchAccounts();
+                cancelUpdate(); // Hide the form after updating
+            })
+            .catch((error) => {
+                console.error("Error updating account:", error);
+            });
+    }
+
+    // Event listener for the account form submission
+    document.getElementById("accountForm").onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+        createAccount(); // Call the createAccount function
+        document.getElementById("accountForm").hidden = true; // Hide the form after creation
+    };
+
+    // Event listener for the update account form submission
+    document.getElementById("update-account-form").onsubmit = function(event) {
+        event.preventDefault(); // Prevent default form submission
+        updateAccount(); // Call the updateAccount function
+    };
+    // Fetch accounts on page load
+    window.onload = fetchAccounts;
+</script>
+</html>
